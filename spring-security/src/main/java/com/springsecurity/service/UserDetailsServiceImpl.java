@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
@@ -23,6 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User Not Found !!");
         }
 
-        return new CustomUserDetails(login);
+        CustomUserDetails customUserDetails=new CustomUserDetails(login);
+        return customUserDetails;
     }
 }
