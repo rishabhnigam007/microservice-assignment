@@ -1,5 +1,6 @@
 package com.user.exception.handler;
 
+import com.user.exception.ProjectMicroServiceDown;
 import com.user.exception.UserAlreadyExistException;
 import com.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,11 @@ public class UserNotFoundExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(value = UserAlreadyExistException.class)
     public ResponseEntity<Object> exception(UserAlreadyExistException userAlreadyExistException) {
         return new ResponseEntity<Object>("User Already Exist With this Office ID !!", HttpStatus.ALREADY_REPORTED);
+    }
+
+    @ExceptionHandler(value = ProjectMicroServiceDown.class)
+    public ResponseEntity<Object> exception(ProjectMicroServiceDown projectMicroServiceDown) {
+        return new ResponseEntity<>("Project Rest Service is Down", HttpStatus.FORBIDDEN);
     }
 
     @Override
