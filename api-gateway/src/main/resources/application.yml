@@ -1,5 +1,5 @@
 server:
-  port: 9002
+  port: 8999
 
 spring:
   datasource:
@@ -15,7 +15,23 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
   application:
-    name: user-service
+    name: api-gateway
+  main:
+    allow-circular-references: true
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+        - id: project-service
+          uri: lb://project-service
+          predicates:
+            - Path=/project/**
 
 eureka:
   instance:
@@ -23,7 +39,5 @@ eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
-    instance:
-      preferIpAddress: true
     service-url:
       defaultZone: http://localhost:8761/eureka/

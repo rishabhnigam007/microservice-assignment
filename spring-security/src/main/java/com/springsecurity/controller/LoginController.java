@@ -5,6 +5,7 @@ import com.springsecurity.repository.LoginRepository;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,12 +21,16 @@ public class LoginController {
     @Autowired
     private LoginRepository loginRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @PostMapping("/createuser")
     @ApiOperation(value = "Creating a User Login",
             notes = "Provide a Login request body for creating a User Login",
             response = Login.class)
     public Login createUser(@Valid @RequestBody Login login) {
         log.info("Inside create login method in controller !!");
+        login.setPassword(bCryptPasswordEncoder.encode(login.getPassword()));
         return loginRepository.save(login);
     }
 
